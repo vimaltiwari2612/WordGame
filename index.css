@@ -1,0 +1,42 @@
+.row {
+    border:1px solid black;  
+    height:5em;
+  }
+  
+  .box {
+    display:inline-block;
+    width:20%;
+    height: 100%;
+    box-sizing:border-box;
+    border:1px solid black; 
+    font-size: 400%;
+    text-align: center;
+  }
+
+  .box:hover{
+      background-color: aqua;
+      cursor: pointer;
+  }
+
+  header{
+      width: 100%;
+      text-align: center;
+  }
+
+  .word{
+      border: 2px solid black;
+      background-color: orange;
+      font-family: cursive;
+      width: fit-content;
+      padding: 1vw;
+  }
+
+  .addWordButton{
+    font-family: cursive;
+    border-block-color: black;
+    background-color: lightgreen;
+  }
+
+  .message{
+    font-size: 100%;
+  }
