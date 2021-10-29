@@ -37,6 +37,14 @@
     background-color: lightgreen;
   }
 
+  .reset{
+    font-family: cursive;
+    border-block-color: black;
+    background-color: lightsalmon;
+    float: right;
+  }
+
   .message{
     font-size: 100%;
   }
+

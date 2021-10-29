@@ -3,25 +3,72 @@ var finalWords = [];
 var wordFormed = "";
 var boxSelected = [];
 var GRID_SIZE = 5;
+var dictionary = [];
+var valid_word_list;
+
+function populateDictionary(word_list){
+    valid_word_list = word_list;
+    for(str in alphabets){
+        var item = new Object();
+        item[alphabets[str].toLowerCase()] = [];
+        dictionary.push(item);
+    }
+    for(var i = 0; i < valid_word_list.length; i++){
+        var currentAlpha = valid_word_list[i].charAt(0);
+        var words = dictionary['\''+currentAlpha+'\''];
+        if(words === undefined){
+            words = [];
+        }
+        words.push(valid_word_list[i]);
+        dictionary['\''+currentAlpha+'\''] = words;
+    }
+    //console.log(dictionary);
+}
+
 //check spelling
 checkSpellingAndAddWord = () =>{
-    console.log('Formed Word : '+wordFormed);
     if(wordFormed === ""){
         toast("No word Found. Select some letters!!");
     }else{
-        if(isValidWord(wordFormed)){
+        console.log('Formed Word : '+wordFormed);
+        if(isAlreadyFormed(wordFormed)){
+            toast("Already covered :- \""+ wordFormed+"\"");
+            console.log("Already covered :- \""+ wordFormed+"\"");
+        }
+        else if(isValidWord(wordFormed)){
             finalWords.push(wordFormed);
             addWord(wordFormed);
             toast("Valid Word :- \""+ wordFormed+"\"");
+            console.log("Valid Word :- \""+ wordFormed+"\"");
         }else{
             toast("Invalid Word :- \""+ wordFormed+"\"");
+            console.log("Invalid Word :- \""+ wordFormed+"\"");
         }
         reset();
     }
 }
 //logic to check the spelling
 isValidWord = (word) =>{
-    return true;
+    console.log(dictionary);
+    var currentAlpha = word.toLowerCase().charAt(0);
+    var words = dictionary['\''+currentAlpha+'\''];
+    console.log('words '+words);
+    for(var i = 0; i < words.length; i++){
+        // compute score
+        var element = words[i].toLowerCase();
+        var nWord = word.toLowerCase();
+        if(element === nWord){
+            return true;
+        }
+    }
+    return false;
+}
+
+isAlreadyFormed = (word) =>{
+    for(var i = 0 ; i < finalWords.length ; i++){
+        if(finalWords[i] === word) return true;
+    }
+    return false;
 }
 //notification on UI
 toast = (Notification) => {
@@ -44,8 +91,10 @@ addWord = (wordFormed) => {
 }
 //reset the params
 reset = () =>{
-    boxSelected.forEach(elem =>{
-        elem.style.backgroundColor = "white";
+    console.log('reseting...');
+    boxSelected.forEach(box =>{
+        box.style.backgroundColor = "white";
+        box.selected = false;
     });
     boxSelected = [];
     wordFormed = "";
@@ -55,13 +104,13 @@ reset = () =>{
 isAdjecent = (selectedBox) =>{
     var currentNumber = selectedBox.number;
     if(boxSelected.length == 0){
-        //console.log('It is the first letter');
+        console.log('It is the first letter');
         return true;
     }
     var foundAdjecent = false;
     for(var i = 0 ; i < boxSelected.length ; i++){
         var boxNumber = boxSelected[i].number;
-        //console.log('currentNumber '+currentNumber + ' | boxNumber '+ boxNumber);
+        console.log('currentNumber '+currentNumber + ' | boxNumber '+ boxNumber);
         //check for all 8 directions
         //up
         if(currentNumber - GRID_SIZE == boxNumber){
@@ -128,15 +177,15 @@ letterSelected = (box) =>{
             box.style.backgroundColor = "orange";
             box.selected = true;
             boxSelected.push(box);
-            //console.log("Selected Letter : "+box.innerHTML);
+            console.log("Selected Letter : "+box.innerHTML);
         }else{
-            //console.log("Selected Letter is not Adjecent");
+            console.log("Selected Letter is not Adjecent");
             toast('Current letter is not connected to selected letters.');
             reset();
         }
 
     }else{
-       // console.log("Already Selected Letter : "+box.innerHTML);
+        console.log("Already Selected Letter : "+box.innerHTML);
     }
 }
 
@@ -170,5 +219,7 @@ grid = () =>{
 
 
 window.onload = grid();
+populateDictionary(english_word_list);
+alert('This is a simple word finding game. \n\n How to Play? \n 1. Select word using tiles.\n 2. click "Add Word". if the word is correct, it will be shown in "Words Found" Section.\n 3. Hit "Clear Selection" to clear all tile selections. \n\n Refresh the page to play it with different combinations.\n HAVE FUN!!');
 
 

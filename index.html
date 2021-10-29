@@ -10,17 +10,19 @@
         <header>
             <h1>Word Game</h1>
         </header>
-        <body>
-            <button class="addWordButton" onclick="checkSpellingAndAddWord();">Add Word</button>
+        <body>        
+            <button title="Add word to found zone." class="addWordButton" onclick="checkSpellingAndAddWord();">Add Word</button>
+            <button title="clear current selected tiles" class="reset" onclick="reset();">Clear Selection</button>
             <br/>
             <span id="message" class="message"></span>
             <br/>
             <div id="gameContainer" class="gameContainer">
             </div>
             <div id="words" >
-                <h3>Words : </h3>
+                <h3>Words Found : </h3>
             </div>
         </body>
+        <script src="english_word_list.js"></script>
         <script src="index.js"></script>
     </body>
 </html>
