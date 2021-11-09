@@ -6,5 +6,4 @@ A simple word finder game using Pure HTML, CSS and Javascript.
 # Future Scope
 
 - auto word finder to get the all possible words present.
-- duplicate or more same alphabets presence.
 - updating the dictionary while playing, if the word is valid and not present in system.
