@@ -4,6 +4,7 @@ var wordFormed = "";
 var boxSelected = [];
 var GRID_SIZE = 5;
 var dictionary = [];
+var largestWordTillNow = "";
 var valid_word_list;
 
 function populateDictionary(word_list){
@@ -38,6 +39,7 @@ checkSpellingAndAddWord = () =>{
         else if(isValidWord(wordFormed)){
             finalWords.push(wordFormed);
             addWord(wordFormed);
+            updateLargestWord(wordFormed);
             toast("Valid Word :- \""+ wordFormed+"\"");
             console.log("Valid Word :- \""+ wordFormed+"\"");
         }else{
@@ -62,6 +64,28 @@ isValidWord = (word) =>{
         }
     }
     return false;
+}
+
+updateLargestWord = (word) =>{
+    console.log(largestWordTillNow);
+    if(largestWordTillNow === "" || (largestWordTillNow !== word && largestWordTillNow.length < word.length)){
+        largestWordTillNow = word;
+    
+        var words = document.getElementById("largestWord");
+        var word = document.getElementsByClassName('largestWord');
+     
+        if(word[0] === undefined){
+            word = document.createElement('span');
+            word.innerHTML = wordFormed;
+            word.className = 'largestWord';
+            var span = document.createElement('span');
+            span.innerHTML = '    ';
+            words.appendChild(word);
+            words.appendChild(span);
+        }else{
+            word[0].innerHTML = wordFormed;
+        }
+    }
 }
 
 isAlreadyFormed = (word) =>{
@@ -191,7 +215,15 @@ letterSelected = (box) =>{
 
 //grid logic
 grid = () =>{
-    
+    //updating grid size as per input
+    GRID_SIZE = 5 * Math.floor(GRID_SIZE/5);
+    //updating characters to fill all boxes
+    var lettersCount = GRID_SIZE * GRID_SIZE;
+    for(var i = 27; i < lettersCount ;){
+        alphabets += alphabets;
+        i += 26; //26 letters we have
+    }
+    //grid formation logic
     var container = document.createElement("div");
     container.className = "container";
     var shuffledString = shuffle(alphabets);
@@ -205,6 +237,7 @@ grid = () =>{
             box.className = "box";
             box.id = "box" + j;
             box.number = k;
+            box.style.width = (100/GRID_SIZE)+'%';
             box.setAttribute('selected', 'false');
             box.innerHTML = shuffledString[k];
             box.setAttribute('onclick','letterSelected(this)');
@@ -217,9 +250,15 @@ grid = () =>{
     main.appendChild(container);
 }
 
-
-window.onload = grid();
-populateDictionary(english_word_list);
 alert('This is a simple word finding game. \n\n How to Play? \n 1. Select word using tiles.\n 2. click "Add Word". if the word is correct, it will be shown in "Words Found" Section.\n 3. Hit "Clear Selection" to clear all tile selections. \n\n Refresh the page to play it with different combinations.\n HAVE FUN!!');
+var size = prompt('Enter Grid Size (N should be multiple of 5 and less than 20)');
+if(isNaN(parseInt(size))) {
+    alert('Enter a valid Number as Grid Size. Refresh the window and try again!')
+}else{
+    GRID_SIZE = size;
+    window.onload = grid();
+    populateDictionary(english_word_list);
+}
+
 
 
